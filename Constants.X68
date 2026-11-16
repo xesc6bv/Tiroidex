@@ -1,0 +1,41 @@
+*-----------------------------------------------------------
+* Title      : Constants
+* Written by : Francesc Bruquetas Vera
+* Date       : 03-11-2026
+* Description: All constants used in the program are here
+*-----------------------------------------------------------
+
+              
+    
+    
+;-----------------SYSTEM RELATED CONSTANTS-------------------    
+SCRWIDTH EQU   640 ;Screen Height
+SCRHEIGH EQU   480 ;Screen Lenght    
+    
+    
+;-----------------DRAWING RELATED CONSTANTS------------------- 
+BLOCK1PEN   EQU $00000000 ; 
+BLOCK1FILL  EQU $009EA7B5 ; 
+
+BLOCK2PEN   EQU $00FFFFFF ; 
+BLOCK2FILL  EQU $00FFFFFF ; 
+
+LLITPEN1    EQU $00052B56 ; 
+LLITFILL1   EQU $00052B56 ; 
+
+LLITPEN2    EQU $00FFFFFF ; 
+LLITFILL2   EQU $00FFFFFF ;
+
+
+
+
+
+
+
+
+
+
+*~Font name~Courier New~
+*~Font size~10~
+*~Tab type~1~
+*~Tab size~4~

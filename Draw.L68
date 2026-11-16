@@ -1,0 +1,219 @@
+0000119E Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 16/11/2026 17:43:04
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title            : Draw
+00000000                             3  * Written by   :
+00000000                             4  * Date           :
+00000000                             5  * Description : 
+00000000                             6  *-----------------------------------------------------------
+00000000                             7  
+00000000                             8  
+00000000                             9  DRAWBLOCK 
+00000000  3A3C 000C                 10             MOVE.W #12, D5                   ; LOOP COUNTER
+00000004  3C3C 0000                 11             MOVE.W #0, D6                     ; OFFSET
+00000008                            12             
+00000008                            13  
+00000008  103C 0050                 14              MOVE.B  #80,D0                  ; SET PEN COLOR
+Line 15 ERROR: Undefined symbol
+0000000C  223C 004DBD16             15              MOVE.L  #BLOCK1PEN,D1
+00000012  4E4F                      16              TRAP    #15
+00000014  103C 0051                 17              MOVE.B  #81,D0                  ; SET FILL COLOR
+Line 18 ERROR: Undefined symbol
+00000018  223C 004DBD16             18              MOVE.L  #BLOCK1FILL,D1
+0000001E  4E4F                      19              TRAP    #15
+00000020                            20              
+00000020                            21  LOOP          
+Line 22 ERROR: Undefined symbol
+00000020  43F9 004DBD16             22              LEA BLOCK1,A1                   ; BEGINNING OF ARRAY
+00000026  4C99 001E                 23              MOVEM.W (A1)+,D1-D4       ; GET COORDINATES FROM ARRAY
+0000002A  D246                      24              ADD.W D6,D1                       ; ADD OFFSET
+0000002C  D646                      25              ADD.W D6,D3                       ; ADD OFFSET
+0000002E  103C 0057                 26              MOVE.B  #87,D0                  ; DRAW SQUARE
+00000032  4E4F                      27              TRAP    #15
+00000034                            28  
+00000034  3E3C 0003                 29              MOVE.W #3, D7                   ; INNER LOOP COUNTER
+00000038                            30  
+00000038                            31  LINES_LOOP
+00000038                            32              
+00000038  4C99 001E                 33              MOVEM.W (A1)+,D1-D4       ; GET COORDINATES FROM ARRAY
+0000003C  D246                      34              ADD.W D6,D1                       ; ADD OFFSET
+0000003E  D646                      35              ADD.W D6,D3                       ; ADD OFFSET
+00000040  103C 0054                 36              MOVE.B  #84,D0                  ; DRAW DETAILS
+00000044  4E4F                      37              TRAP    #15 
+00000046  51CF FFF0                 38              DBRA D7, LINES_LOOP
+0000004A                            39              
+0000004A  0646 0032                 40              ADD.W #50,D6                     ; UPDATE OFFSET
+0000004E  51CD FFD0                 41              DBRA D5, LOOP
+00000052                            42              
+00000052                            43              
+00000052  4E75                      44              RTS
+00000054                            45              
+00000054                            46  
+00000054                            47              
+00000054                            48      
+00000054                            49  DRAWBLOCK2
+00000054                            50  
+00000054                            51  
+00000054  103C 0050                 52              MOVE.B  #80,D0                  ; SET PEN COLOR
+Line 53 ERROR: Undefined symbol
+00000058  223C 004DBD16             53              MOVE.L  #BLOCK2PEN,D1
+0000005E  4E4F                      54              TRAP    #15
+00000060  103C 0051                 55              MOVE.B  #81,D0                  ; SET FILL COLOR
+Line 56 ERROR: Undefined symbol
+00000064  223C 004DBD16             56              MOVE.L  #BLOCK2FILL,D1
+0000006A  4E4F                      57              TRAP    #15
+0000006C                            58                       
+Line 59 ERROR: Undefined symbol
+0000006C  43F9 004DBD16             59              LEA    .BLOCK2,A1
+00000072  4C99 001E                 60              MOVEM.W (A1)+,D1-D4             ; GET COORDINATES FROM ARRAY
+00000076  103C 0057                 61              MOVE.B  #87,D0                  ; DRAW SQUARE
+0000007A  4E4F                      62              TRAP    #15 
+0000007C                            63              
+Line 64 ERROR: Undefined symbol
+0000007C  43F9 004DBD16             64               LEA    .BLOCK2A,A1
+00000082  4C99 001E                 65              MOVEM.W (A1)+,D1-D4             ; GET COORDINATES FROM ARRAY
+00000086  103C 0057                 66              MOVE.B  #87,D0                   ; DRAW SQUARE
+0000008A  4E4F                      67              TRAP    #15 
+0000008C                            68              
+Line 69 ERROR: Undefined symbol
+0000008C  43F9 004DBD16             69               LEA    .BLOCK2B,A1
+00000092  4C99 001E                 70              MOVEM.W (A1)+,D1-D4             ; GET COORDINATES FROM ARRAY
+00000096  103C 0057                 71               MOVE.B  #87,D0                  ; DRAW SQUARE
+0000009A  4E4F                      72              TRAP    #15 
+0000009C                            73  
+0000009C                            74  
+0000009C                            75  
+0000009C                            76              
+0000009C  4E75                      77              RTS
+0000009E                            78  
+0000009E                            79  
+0000009E                            80  
+0000009E                            81  
+0000009E                            82  
+0000009E                            83  
+0000009E                            84  
+0000009E                            85  
+0000009E                            86  
+0000009E                            87  DRAWLLIT
+0000009E                            88  
+0000009E  103C 0050                 89              MOVE.B  #80,D0                  ; SET PEN COLOR
+Line 90 ERROR: Undefined symbol
+000000A2  223C 004DBD16             90              MOVE.L  #LLITPEN1,D1
+000000A8  4E4F                      91              TRAP    #15
+000000AA  103C 0051                 92              MOVE.B  #81,D0                  ; SET FILL COLOR
+Line 93 ERROR: Undefined symbol
+000000AE  223C 004DBD16             93              MOVE.L  #LLITFILL1,D1
+000000B4  4E4F                      94              TRAP    #15
+000000B6                            95  
+Line 96 ERROR: Undefined symbol
+000000B6  43F9 004DBD16             96              LEA    .LLITA,A1
+000000BC  4C99 001E                 97              MOVEM.W (A1)+,D1-D4             ; GET COORDINATES FROM ARRAY
+000000C0  103C 0057                 98              MOVE.B  #87,D0                  ; DRAW SQUARE
+000000C4  4E4F                      99              TRAP    #15 
+000000C6                           100  
+Line 101 ERROR: Undefined symbol
+000000C6  43F9 004DBD16            101              LEA    .LLITB,A1
+000000CC  4C99 001E                102              MOVEM.W (A1)+,D1-D4             ; GET COORDINATES FROM ARRAY
+000000D0  103C 0057                103              MOVE.B  #87,D0                  ; DRAW SQUARE
+000000D4  4E4F                     104              TRAP    #15
+000000D6                           105              
+Line 106 ERROR: Undefined symbol
+000000D6  43F9 004DBD16            106              LEA    .LLITC,A1
+000000DC  4C99 001E                107              MOVEM.W (A1)+,D1-D4             ; GET COORDINATES FROM ARRAY
+000000E0  103C 0057                108              MOVE.B  #87,D0                  ; DRAW SQUARE
+000000E4  4E4F                     109              TRAP    #15 
+000000E6                           110              
+Line 111 ERROR: Undefined symbol
+000000E6  43F9 004DBD16            111               LEA    .LLITD,A1
+000000EC  4C99 001E                112              MOVEM.W (A1)+,D1-D4             ; GET COORDINATES FROM ARRAY
+000000F0  103C 0057                113              MOVE.B  #87,D0                  ; DRAW SQUARE
+000000F4  4E4F                     114              TRAP    #15 
+000000F6                           115  
+000000F6                           116              
+000000F6  103C 0050                117              MOVE.B  #80,D0                  ; SET PEN COLOR
+Line 118 ERROR: Undefined symbol
+000000FA  223C 004DBD16            118              MOVE.L  #LLITPEN2,D1
+00000100  4E4F                     119              TRAP    #15
+00000102  103C 0051                120              MOVE.B  #81,D0                  ; SET FILL COLOR
+Line 121 ERROR: Undefined symbol
+00000106  223C 004DBD16            121              MOVE.L  #LLITFILL2,D1
+0000010C  4E4F                     122              TRAP    #15
+0000010E                           123              
+Line 124 ERROR: Undefined symbol
+0000010E  43F9 004DBD16            124              LEA    .LLITE,A1
+00000114  4C99 001E                125              MOVEM.W (A1)+,D1-D4             ; GET COORDINATES FROM ARRAY
+00000118  103C 0057                126              MOVE.B  #87,D0                  ; DRAW SQUARE
+0000011C  4E4F                     127              TRAP    #15 
+0000011E                           128  
+Line 129 ERROR: Undefined symbol
+0000011E  43F9 004DBD16            129              LEA    .LLITF,A1
+00000124  4C99 001E                130              MOVEM.W (A1)+,D1-D4             ; GET COORDINATES FROM ARRAY
+00000128  103C 0057                131              MOVE.B  #87,D0                  ; DRAW SQUARE
+0000012C  4E4F                     132              TRAP    #15
+0000012E                           133              
+0000012E  4E75                     134              RTS
+00000130                           135              
+00000130                           136  
+00000130                           137  
+00000130                           138  
+00000130                           139  
+00000130                           140  
+00000130                           141  
+00000130                           142  
+00000130                           143  
+00000130                           144  
+00000130                           145  
+00000130                           146  
+00000130                           147  
+00000130                           148  
+00000130                           149  
+00000130                           150  
+00000130                           151  
+00000130                           152  
+00000130                           153  
+00000130                           154  
+00000130                           155  
+00000130                           156  
+00000130                           157  
+00000130                           158  
+00000130                           159  
+00000130                           160  
+00000130                           161  
+00000130                           162  
+00000130                           163  
+00000130                           164  
+00000130                           165  
+00000130                           166  
+00000130                           167  
+00000130                           168  
+00000130                           169  
+00000130                           170  
+00000130                           171  
+00000130                           172  
+00000130                           173  
+00000130                           174  
+00000130                           175  
+00000130                           176  
+00000130                           177  
+00000130                           178  
+00000130                           179  
+00000130                           180  
+00000130                           181  
+00000130                           182  
+00000130                           183  
+Line 184 WARNING: END directive missing, starting address not set
+
+18 errors detected
+1 warning generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+DRAWBLOCK           0
+DRAWBLOCK2          54
+DRAWLLIT            9E
+LINES_LOOP          38
+LOOP                20
