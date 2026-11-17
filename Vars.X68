@@ -13,6 +13,7 @@ BUFFER          DS.B 1996
 
 ;-----------------DRAWING RELATED VARIABLES-------------------
 
+
 *~Font name~Courier New~
 *~Font size~12~
 *~Tab type~1~

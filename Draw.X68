@@ -4,180 +4,129 @@
 * Date           :
 * Description : 
 *-----------------------------------------------------------
+; -----------------------------------------------------------------------------
+;DRAWFIRST
+; DRAWS ALL FIRST STAGE
+; INPUT    - A0 POINTER TO THE PICTURE
+;            D5.W X OFFSET
+;            D6.W Y OFFSET
+;			 
+				
+; OUTPUT   - NONE
+; MODIFIES - NONE
+; 
+; -----------------------------------------------------------------------------
 
 
-DRAWBLOCK 
-           MOVE.W #12, D5                   ; LOOP COUNTER
-           MOVE.W #0, D6                     ; OFFSET
-           
+DRAWFIRST
+			
+			MOVEM.L A2,-(A7)
+			LEA	DRAWLST,A2
+			MOVE.W #0,D7
+.LOOP_DRW			
+			MULU.W #4,D7
+			MOVE.L  (A2,D7.W),A0 ;POINTER TO ACTUAL ADRESS
+			DIVU.W #4,D7
+			MOVEM.L A0,-(A7)
+			JSR DRAWSR
+			MOVEM.L (A7)+,A0
+			
+			ADDQ.W  #1,D7
+            CMP.W   #LENGTH1,D7          
+            BLT    .LOOP_DRW     ;LOWER THAN LENGTH1 KEEP ITERATING
+						
+			MOVE.L (A7)+,A2			
+			RTS
 
-            MOVE.B  #80,D0                  ; SET PEN COLOR
-            MOVE.L  #BLOCK1PEN,D1
+
+DRAWFLOOR
+			
+			LEA	FLOORDATA,A0
+			MOVE.W #0,D7
+.LOOP_DRW2	
+					
+			MOVEM.L A0,-(A7)
+			JSR DRAWSR
+			MOVEM.L (A7)+,A0
+			
+			ADDQ.W  #1,D7
+			ADD.W	#50,D5
+            CMP.W   #LENGTH2,D7          
+            BLT    .LOOP_DRW2     ;LOWER THAN LENGTH1 KEEP ITERATING
+									
+			RTS
+
+
+
+
+; -----------------------------------------------------------------------------
+;DRAWSR
+; DRAWS A PICTURE
+; INPUT    - A0 POINTER TO THE PICTURE
+;            D5.W X OFFSET
+;            D6.W Y OFFSET
+; OUTPUT   - NONE
+; MODIFIES - NONE
+; 
+
+
+DRAWSR
+		
+			MOVEM.L D0-D4/A0-A1,-(A7)
+.LOOP		MOVE.W  (A0)+,D0   ;COMMAND ID
+			BEQ 	.END
+			LEA     .TBL,A1
+			MULU.W 	#4,D0	;TIMES 4 TO ACCES CORRECT LONG						
+			MOVE.L  (A1,D0.W),A1	;GET THE CORRECT JUMP ADDRESS		 
+           	DIVU.W  #4,D0                   ; RESTORE D0
+			ADD.W   #79,D0                  ; CREATE THE TRAP CODE
+            JMP     (A1)                    ; JUMP TO ADDRESS
+            
+
+.TBL     	DC.L    .LOOP                   ; 00 UNUSED
+            DC.L    .D1L                    ; 01 SET PEN
+            DC.L    .D1L                    ; 02 SET FILL
+            DC.L    .D1D2W                  ; 03 DRAW PIXEL
+            DC.L    .PAF                   ; 04 SET PEN AND FILL
+            DC.L    .D1D4W                  ; 05 DRAW LINE FULL SPECS
+            DC.L    .D1D2W                  ; 06 DRAW LINE POLYLINE VERSION
+            DC.L    .D1D2W                  ; 07 MOVE TO
+            DC.L    .D1D4W                  ; 08 DRAW FILLED RECTANGLE
+            DC.L    .D1D4W                  ; 09 DRAW FILLED ELLIPSE
+            DC.L    .D1D2W                  ; 10 FLOOD FILL
+            DC.L    .D1D4W                  ; 11 DRAW UNFILLED RECTANGLE
+            DC.L    .D1D4W                  ; 12 DRAW UNFILLED ELLIPSE          
+            
+.D1L		MOVE.L  (A0)+,D1                ; GET LONG
             TRAP    #15
-            MOVE.B  #81,D0                  ; SET FILL COLOR
-            MOVE.L  #BLOCK1FILL,D1
+            JMP     .LOOP
+            
+.PAF       	MOVE.L  (A0)+,D1                ; GET LONG AND DO SET PEN AND FILL
+            MOVE.B  #80,D0
             TRAP    #15
-            
-LOOP          
-            LEA BLOCK1,A1                   ; BEGINNING OF ARRAY
-            MOVEM.W (A1)+,D1-D4       ; GET COORDINATES FROM ARRAY
-            ADD.W D6,D1                       ; ADD OFFSET
-            ADD.W D6,D3                       ; ADD OFFSET
-            MOVE.B  #87,D0                  ; DRAW SQUARE
+            ADDQ.B  #1,D0
             TRAP    #15
+            JMP     .LOOP
+            
 
-            MOVE.W #3, D7                   ; INNER LOOP COUNTER
+.D1D2W		MOVE.L  (A0)+,D1                ; GET LONG AND DO SET PEN AND FILL
+            MOVE.B  #80,D0
+            TRAP    #15
+            ADDQ.B  #1,D0
+            TRAP    #15
+            JMP     .LOOP
 
-LINES_LOOP
             
-            MOVEM.W (A1)+,D1-D4       ; GET COORDINATES FROM ARRAY
-            ADD.W D6,D1                       ; ADD OFFSET
-            ADD.W D6,D3                       ; ADD OFFSET
-            MOVE.B  #84,D0                  ; DRAW DETAILS
-            TRAP    #15 
-            DBRA D7, LINES_LOOP
-            
-            ADD.W #50,D6                     ; UPDATE OFFSET
-            DBRA D5, LOOP
-            
-            
+.D1D4W      MOVEM.W (A0)+,D1-D4             ; GET 4 WORDS
+            ADD.W   D5,D1
+            ADD.W   D6,D2
+            ADD.W   D5,D3
+            ADD.W   D6,D4
+            TRAP    #15
+            JMP     .LOOP					
+			
+.END        MOVEM.L (A7)+,D0-D4/A0-A1
             RTS
-            
-
-            
-    
-DRAWBLOCK2
-
-
-            MOVE.B  #80,D0                  ; SET PEN COLOR
-            MOVE.L  #BLOCK2PEN,D1
-            TRAP    #15
-            MOVE.B  #81,D0                  ; SET FILL COLOR
-            MOVE.L  #BLOCK2FILL,D1
-            TRAP    #15
-                     
-            LEA    .BLOCK2,A1
-            MOVEM.W (A1)+,D1-D4             ; GET COORDINATES FROM ARRAY
-            MOVE.B  #87,D0                  ; DRAW SQUARE
-            TRAP    #15 
-            
-             LEA    .BLOCK2A,A1
-            MOVEM.W (A1)+,D1-D4             ; GET COORDINATES FROM ARRAY
-            MOVE.B  #87,D0                   ; DRAW SQUARE
-            TRAP    #15 
-            
-             LEA    .BLOCK2B,A1
-            MOVEM.W (A1)+,D1-D4             ; GET COORDINATES FROM ARRAY
-             MOVE.B  #87,D0                  ; DRAW SQUARE
-            TRAP    #15 
-
-
-
-            
-            RTS
-
-
-
-
-
-
-
-
-
-DRAWLLIT
-
-            MOVE.B  #80,D0                  ; SET PEN COLOR
-            MOVE.L  #LLITPEN1,D1
-            TRAP    #15
-            MOVE.B  #81,D0                  ; SET FILL COLOR
-            MOVE.L  #LLITFILL1,D1
-            TRAP    #15
-
-            LEA    .LLITA,A1
-            MOVEM.W (A1)+,D1-D4             ; GET COORDINATES FROM ARRAY
-            MOVE.B  #87,D0                  ; DRAW SQUARE
-            TRAP    #15 
-
-            LEA    .LLITB,A1
-            MOVEM.W (A1)+,D1-D4             ; GET COORDINATES FROM ARRAY
-            MOVE.B  #87,D0                  ; DRAW SQUARE
-            TRAP    #15
-            
-            LEA    .LLITC,A1
-            MOVEM.W (A1)+,D1-D4             ; GET COORDINATES FROM ARRAY
-            MOVE.B  #87,D0                  ; DRAW SQUARE
-            TRAP    #15 
-            
-             LEA    .LLITD,A1
-            MOVEM.W (A1)+,D1-D4             ; GET COORDINATES FROM ARRAY
-            MOVE.B  #87,D0                  ; DRAW SQUARE
-            TRAP    #15 
-
-            
-            MOVE.B  #80,D0                  ; SET PEN COLOR
-            MOVE.L  #LLITPEN2,D1
-            TRAP    #15
-            MOVE.B  #81,D0                  ; SET FILL COLOR
-            MOVE.L  #LLITFILL2,D1
-            TRAP    #15
-            
-            LEA    .LLITE,A1
-            MOVEM.W (A1)+,D1-D4             ; GET COORDINATES FROM ARRAY
-            MOVE.B  #87,D0                  ; DRAW SQUARE
-            TRAP    #15 
-
-            LEA    .LLITF,A1
-            MOVEM.W (A1)+,D1-D4             ; GET COORDINATES FROM ARRAY
-            MOVE.B  #87,D0                  ; DRAW SQUARE
-            TRAP    #15
-            
-            RTS
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

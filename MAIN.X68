@@ -18,11 +18,9 @@ START:
    
     
     JSR     INIT     ; 1. Primero inicializamos la pantalla
-    JSR     FILE
-    JSR     DRAWBLOCK   ; 2. Despues dibujamos el bloque
-    JSR     DRAWBLOCK2   ; 2. Despues dibujamos el bloque
-    JSR     DRAWLLIT
-   
+    ;JSR     FILE
+    JSR     DRAWFIRST   ; 2. Despues dibujamos el bloque
+    JSR     DRAWFLOOR   
 
     
     
@@ -35,6 +33,7 @@ START:
     INCLUDE "Vars.X68"
     
     END    START       
+
 
 
 
