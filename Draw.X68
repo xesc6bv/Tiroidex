@@ -86,7 +86,7 @@ DRAWSR
 .TBL     	DC.L    .LOOP                   ; 00 UNUSED
             DC.L    .D1L                    ; 01 SET PEN
             DC.L    .D1L                    ; 02 SET FILL
-            DC.L    .D1D2W                  ; 03 DRAW PIXEL
+            DC.L    .PAF                  ; 03 DRAW PIXEL
             DC.L    .PAF                   ; 04 SET PEN AND FILL
             DC.L    .D1D4W                  ; 05 DRAW LINE FULL SPECS
             DC.L    .D1D2W                  ; 06 DRAW LINE POLYLINE VERSION
@@ -108,8 +108,7 @@ DRAWSR
             TRAP    #15
             JMP     .LOOP
             
-
-.D1D2W		MOVE.L  (A0)+,D1                ; GET LONG AND DO SET PEN AND FILL
+.D1D2W      MOVE.L  (A0)+,D1                ; GET LONG AND DO SET PEN AND FILL
             MOVE.B  #80,D0
             TRAP    #15
             ADDQ.B  #1,D0
@@ -127,6 +126,8 @@ DRAWSR
 			
 .END        MOVEM.L (A7)+,D0-D4/A0-A1
             RTS
+
+
 
 
 

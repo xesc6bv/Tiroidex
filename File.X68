@@ -34,10 +34,10 @@ FILECLOSING
 
            MOVE.B   #56,D0
            TRAP     #15
-           MOVEM.L (A7)+,D0/A0/D2
            RTS
            
          
+
 
 
 

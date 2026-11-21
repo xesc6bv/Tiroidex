@@ -8,10 +8,18 @@
 ;-----------------Drawing Related Data-------------------
 
 
-DRAWLST      	DC.L    .LLIT                	; 0
-            	DC.L    .BLOCK2                 ; 1
+DRAWLST      	DC.L    .WHITETEST                 	; 0
+            	DC.L    .WHITETEST                 ; 1
 
-            	
+				
+
+
+.WHITETEST 			DC.W 2
+					DC.L BLOCK1FILL           	
+					DC.W 8,0,0,640,480
+
+
+
 
 .BLOCK2            
 					DC.W 2
@@ -46,6 +54,7 @@ FLOORDATA			DC.W 1
                     DC.W 5,0,420,50,450
                     DC.W 5,25,470,25,450
                     DC.W 0				
+
 
 *~Font name~Courier New~
 *~Font size~12~

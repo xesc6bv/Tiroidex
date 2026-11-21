@@ -9,8 +9,8 @@
     
     
 ;-----------------SYSTEM RELATED CONSTANTS-------------------    
-SCRWIDTH EQU   640 ;Screen Height
-SCRHEIGH EQU   480 ;Screen Lenght    
+SCRWIDTH EQU   640 ;Screen Width
+SCRHEIGH EQU   480 ;Screen Height   
     
     
 ;-----------------DRAWING RELATED CONSTANTS------------------- 
@@ -29,6 +29,7 @@ LLITPEN2    EQU $00FFFFFF ;
 LLITFILL2   EQU $00AAFFFF ;
 
 LLITFILL3   EQU $000022FF ;
+
 
 
 

@@ -1,6 +1,6 @@
-00001220 Starting Address
+00001276 Starting Address
 Assembler used: EASy68K Editor/Assembler v5.16.01
-Created On: 17/11/2026 19:58:51
+Created On: 21/11/2026 12:16:12
 
 00000000                             1  *-----------------------------------------------------------
 00000000                             2  * Title      :
@@ -17,8 +17,8 @@ Created On: 17/11/2026 19:58:51
 00001000                            13      
 00001000                            14      
 00001000                            15  ;-----------------SYSTEM RELATED CONSTANTS-------------------    
-00001000  =00000280                 16  SCRWIDTH EQU   640 ;Screen Height
-00001000  =000001E0                 17  SCRHEIGH EQU   480 ;Screen Lenght    
+00001000  =00000280                 16  SCRWIDTH EQU   640 ;Screen Width
+00001000  =000001E0                 17  SCRHEIGH EQU   480 ;Screen Height   
 00001000                            18      
 00001000                            19      
 00001000                            20  ;-----------------DRAWING RELATED CONSTANTS------------------- 
@@ -47,291 +47,356 @@ Created On: 17/11/2026 19:58:51
 00001000                            43  
 00001000                            44  
 00001000                            45  
-00001000                            46  -------------------- end include --------------------
-00001000                            47       INCLUDE "File.X68"
-00001000                            48  
-00001000                            49  FILE
-00001000  48E7 E040                 50              MOVEM.L D0-D2/A1,-(A7)
-00001004  4EB9 0000101C             51              JSR FILEOPENING
-0000100A  4EB9 0000102A             52              JSR FILEREADING1
-00001010  4EB9 0000103E             53              JSR FILECLOSING
-00001016  4CDF 0207                 54              MOVEM.L (A7)+,D0-D2/A1
-0000101A  4E75                      55              RTS
-0000101C                            56  
-0000101C                            57  FILEOPENING
-0000101C                            58               
-0000101C                            59  
-0000101C  43F9 00001230             60               LEA    FILEDIRECTION1,A1
-00001022  103C 0033                 61               MOVE.B #51,D0
-00001026  4E4F                      62               TRAP   #15
-00001028  4E75                      63               RTS
-0000102A                            64  
-0000102A                            65  FILEREADING1
-0000102A                            66  
-0000102A  43F9 00001246             67              LEA     BUFFER,A1
-00001030  243C 000007CC             68              MOVE.L  #1996,D2
-00001036  103C 0035                 69              MOVE.B  #53,D0
-0000103A  4E4F                      70              TRAP    #15        
-0000103C  4E75                      71              RTS
-0000103E                            72  
+00001000                            46  
+00001000                            47  -------------------- end include --------------------
+00001000                            48       INCLUDE "File.X68"
+00001000                            49  
+00001000                            50  FILE
+00001000  48E7 E040                 51              MOVEM.L D0-D2/A1,-(A7)
+00001004  4EB9 0000101C             52              JSR FILEOPENING
+0000100A  4EB9 0000102A             53              JSR FILEREADING1
+00001010  4EB9 0000103E             54              JSR FILECLOSING
+00001016  4CDF 0207                 55              MOVEM.L (A7)+,D0-D2/A1
+0000101A  4E75                      56              RTS
+0000101C                            57  
+0000101C                            58  FILEOPENING
+0000101C                            59               
+0000101C                            60  
+0000101C  43F9 00001286             61               LEA    FILEDIRECTION1,A1
+00001022  103C 0033                 62               MOVE.B #51,D0
+00001026  4E4F                      63               TRAP   #15
+00001028  4E75                      64               RTS
+0000102A                            65  
+0000102A                            66  FILEREADING1
+0000102A                            67  
+0000102A  43F9 0000129C             68              LEA     BUFFER,A1
+00001030  243C 000007CC             69              MOVE.L  #1996,D2
+00001036  103C 0035                 70              MOVE.B  #53,D0
+0000103A  4E4F                      71              TRAP    #15        
+0000103C  4E75                      72              RTS
 0000103E                            73  
-0000103E                            74  FILECLOSING   
-0000103E                            75  
-0000103E  103C 0038                 76             MOVE.B   #56,D0
-00001042  4E4F                      77             TRAP     #15
-00001044  4CDF 0105                 78             MOVEM.L (A7)+,D0/A0/D2
-00001048  4E75                      79             RTS
-0000104A                            80             
-0000104A                            81           
-0000104A                            82  
-0000104A                            83  
-0000104A                            84  
-0000104A                            85  
-0000104A                            86  
-0000104A                            87  -------------------- end include --------------------
-0000104A                            88      INCLUDE "init.X68"
-0000104A                            89  
-0000104A                            90  INIT
-0000104A  4EB9 00001058             91          JSR SCRINIT
-00001050  4EB9 0000106A             92          JSR FILEINIT
-00001056  4E75                      93          RTS
-00001058                            94     
-00001058                            95  ; -----------------------------------------------------------------------------
-00001058                            96  SCRINIT
-00001058                            97  ; INITIALIZES THE SCREEN, SCREEN-RELATED INTERRUPT AND VARS.
-00001058                            98  ; INPUT    - NONE
-00001058                            99  ; OUTPUT   - NONE
-00001058                           100  ; MODIFIES - D0,D1,D2,D3
-00001058                           101  ; -----------------------------------------------------------------------------
-00001058                           102  
-00001058  103C 0021                103                MOVE.B  #33,D0
-0000105C  223C 028001E0            104              MOVE.L  #SCRWIDTH<<16|SCRHEIGH,D1 ; WIDTH (HIGH) | HEIGHT (LOW)
-00001062  4E4F                     105              TRAP    #15
-00001064                           106              
-00001064  7201                     107              MOVE.L  #1,D1                   ; SET WINDOWED MODE
-00001066  4E4F                     108              TRAP    #15
-00001068  4E75                     109              RTS
-0000106A                           110                    
-0000106A                           111  
-0000106A                           112  FILEINIT
-0000106A                           113  
-0000106A  103C 0032                114          MOVE.B #50,D0
-0000106E  4E4F                     115          TRAP    #15
-00001070  4E75                     116          RTS
-00001072                           117  
-00001072                           118  
-00001072                           119  
-00001072                           120  
-00001072                           121  
-00001072                           122  
-00001072                           123  
-00001072                           124  -------------------- end include --------------------
-00001072                           125      INCLUDE "draw.X68"
-00001072                           126  ; -----------------------------------------------------------------------------
-00001072                           127  ;DRAWFIRST
-00001072                           128  ; DRAWS ALL FIRST STAGE
-00001072                           129  ; INPUT    - A0 POINTER TO THE PICTURE
-00001072                           130  ;            D5.W X OFFSET
-00001072                           131  ;            D6.W Y OFFSET
-00001072                           132  ;            
-00001072                           133                  
-00001072                           134  ; OUTPUT   - NONE
-00001072                           135  ; MODIFIES - NONE
-00001072                           136  ; 
-00001072                           137  ; -----------------------------------------------------------------------------
-00001072                           138  
-00001072                           139  
-00001072                           140  DRAWFIRST
-00001072                           141              
-00001072  48E7 0020                142              MOVEM.L A2,-(A7)
-00001076  45F9 00001162            143              LEA DRAWLST,A2
-0000107C  3E3C 0000                144              MOVE.W #0,D7
-00001080                           145  .LOOP_DRW           
-00001080  CEFC 0004                146              MULU.W #4,D7
-00001084  2072 7000                147              MOVE.L  (A2,D7.W),A0 ;POINTER TO ACTUAL ADRESS
-00001088  8EFC 0004                148              DIVU.W #4,D7
-0000108C  48E7 0080                149              MOVEM.L A0,-(A7)
-00001090  4EB9 000010CC            150              JSR DRAWSR
-00001096  4CDF 0100                151              MOVEM.L (A7)+,A0
-0000109A                           152              
-0000109A  5247                     153              ADDQ.W  #1,D7
-0000109C  BE7C 0002                154              CMP.W   #LENGTH1,D7          
-000010A0  6DDE                     155              BLT    .LOOP_DRW     ;LOWER THAN LENGTH1 KEEP ITERATING
-000010A2                           156                          
-000010A2  245F                     157              MOVE.L (A7)+,A2         
-000010A4  4E75                     158              RTS
-000010A6                           159  
-000010A6                           160  
-000010A6                           161  DRAWFLOOR
-000010A6                           162              
-000010A6  41F9 000011E0            163              LEA FLOORDATA,A0
-000010AC  3E3C 0000                164              MOVE.W #0,D7
-000010B0                           165  .LOOP_DRW2  
-000010B0                           166                      
-000010B0  48E7 0080                167              MOVEM.L A0,-(A7)
-000010B4  4EB9 000010CC            168              JSR DRAWSR
-000010BA  4CDF 0100                169              MOVEM.L (A7)+,A0
-000010BE                           170              
-000010BE  5247                     171              ADDQ.W  #1,D7
-000010C0  0645 0032                172              ADD.W   #50,D5
-000010C4  BE7C 000D                173              CMP.W   #LENGTH2,D7          
-000010C8  6DE6                     174              BLT    .LOOP_DRW2     ;LOWER THAN LENGTH1 KEEP ITERATING
-000010CA                           175                                      
-000010CA  4E75                     176              RTS
-000010CC                           177  
-000010CC                           178  
-000010CC                           179  
-000010CC                           180  
-000010CC                           181  ; -----------------------------------------------------------------------------
-000010CC                           182  ;DRAWSR
-000010CC                           183  ; DRAWS A PICTURE
-000010CC                           184  ; INPUT    - A0 POINTER TO THE PICTURE
-000010CC                           185  ;            D5.W X OFFSET
-000010CC                           186  ;            D6.W Y OFFSET
-000010CC                           187  ; OUTPUT   - NONE
-000010CC                           188  ; MODIFIES - NONE
-000010CC                           189  ; 
-000010CC                           190  
-000010CC                           191  
-000010CC                           192  DRAWSR
-000010CC                           193          
-000010CC  48E7 F8C0                194              MOVEM.L D0-D4/A0-A1,-(A7)
-000010D0  3018                     195  .LOOP       MOVE.W  (A0)+,D0   ;COMMAND ID
-000010D2  6700 0088                196              BEQ     .END
-000010D6  43F9 000010EE            197              LEA     .TBL,A1
-000010DC  C0FC 0004                198              MULU.W  #4,D0   ;TIMES 4 TO ACCES CORRECT LONG                      
-000010E0  2271 0000                199              MOVE.L  (A1,D0.W),A1    ;GET THE CORRECT JUMP ADDRESS        
-000010E4  80FC 0004                200              DIVU.W  #4,D0                   ; RESTORE D0
-000010E8  0640 004F                201              ADD.W   #79,D0                  ; CREATE THE TRAP CODE
-000010EC  4ED1                     202              JMP     (A1)                    ; JUMP TO ADDRESS
-000010EE                           203              
-000010EE                           204  
-000010EE= 000010D0                 205  .TBL        DC.L    .LOOP                   ; 00 UNUSED
-000010F2= 00001122                 206              DC.L    .D1L                    ; 01 SET PEN
-000010F6= 00001122                 207              DC.L    .D1L                    ; 02 SET FILL
-000010FA= 0000113A                 208              DC.L    .D1D2W                  ; 03 DRAW PIXEL
-000010FE= 0000112A                 209              DC.L    .PAF                   ; 04 SET PEN AND FILL
-00001102= 0000114A                 210              DC.L    .D1D4W                  ; 05 DRAW LINE FULL SPECS
-00001106= 0000113A                 211              DC.L    .D1D2W                  ; 06 DRAW LINE POLYLINE VERSION
-0000110A= 0000113A                 212              DC.L    .D1D2W                  ; 07 MOVE TO
-0000110E= 0000114A                 213              DC.L    .D1D4W                  ; 08 DRAW FILLED RECTANGLE
-00001112= 0000114A                 214              DC.L    .D1D4W                  ; 09 DRAW FILLED ELLIPSE
-00001116= 0000113A                 215              DC.L    .D1D2W                  ; 10 FLOOD FILL
-0000111A= 0000114A                 216              DC.L    .D1D4W                  ; 11 DRAW UNFILLED RECTANGLE
-0000111E= 0000114A                 217              DC.L    .D1D4W                  ; 12 DRAW UNFILLED ELLIPSE          
-00001122                           218              
-00001122  2218                     219  .D1L        MOVE.L  (A0)+,D1                ; GET LONG
-00001124  4E4F                     220              TRAP    #15
-00001126  4EF8 10D0                221              JMP     .LOOP
-0000112A                           222              
-0000112A  2218                     223  .PAF        MOVE.L  (A0)+,D1                ; GET LONG AND DO SET PEN AND FILL
-0000112C  103C 0050                224              MOVE.B  #80,D0
-00001130  4E4F                     225              TRAP    #15
-00001132  5200                     226              ADDQ.B  #1,D0
-00001134  4E4F                     227              TRAP    #15
-00001136  4EF8 10D0                228              JMP     .LOOP
-0000113A                           229              
-0000113A                           230  
-0000113A  2218                     231  .D1D2W      MOVE.L  (A0)+,D1                ; GET LONG AND DO SET PEN AND FILL
-0000113C  103C 0050                232              MOVE.B  #80,D0
-00001140  4E4F                     233              TRAP    #15
-00001142  5200                     234              ADDQ.B  #1,D0
-00001144  4E4F                     235              TRAP    #15
-00001146  4EF8 10D0                236              JMP     .LOOP
-0000114A                           237  
-0000114A                           238              
-0000114A  4C98 001E                239  .D1D4W      MOVEM.W (A0)+,D1-D4             ; GET 4 WORDS
-0000114E  D245                     240              ADD.W   D5,D1
-00001150  D446                     241              ADD.W   D6,D2
-00001152  D645                     242              ADD.W   D5,D3
-00001154  D846                     243              ADD.W   D6,D4
-00001156  4E4F                     244              TRAP    #15
-00001158  4EF8 10D0                245              JMP     .LOOP                   
-0000115C                           246              
-0000115C  4CDF 031F                247  .END        MOVEM.L (A7)+,D0-D4/A0-A1
-00001160  4E75                     248              RTS
-00001162                           249  
-00001162                           250  
-00001162                           251  
-00001162                           252  
-00001162                           253  -------------------- end include --------------------
-00001162                           254      INCLUDE "DATA/Data.X68"
-00001162                           255  
-00001162                           256  ;-----------------Drawing Related Data-------------------
-00001162                           257  
-00001162                           258  
-00001162= 00001190                 259  DRAWLST         DC.L    .LLIT                   ; 0
-00001166= 0000116A                 260                  DC.L    .BLOCK2                 ; 1
-0000116A                           261  
-0000116A                           262                  
-0000116A                           263  
-0000116A                           264  .BLOCK2            
-0000116A= 0002                     265                      DC.W 2
-0000116C= 00FFFFFF                 266                      DC.L BLOCK2FILL
-00001170= 0008 0064 00FA 0...      267                      DC.W 8,100,250,190,180
-0000117A= 0008 00B9 010E 0...      268                      DC.W 8,185,270,330,200
-00001184= 0008 0118 00DC 0...      269                      DC.W 8,280,220,310,180
-0000118E= 0000                     270                      DC.W 0 
-00001190                           271  
-00001190= 0002                     272  .LLIT               DC.W 2
-00001192= 00052B56                 273                      DC.L LLITFILL1
-00001196= 0008 015E 01AE 0...      274                      DC.W 8,350,430,355,410
-000011A0= 0008 015E 01A4 0...      275                      DC.W 8,350,420,440,410
-000011AA= 0008 01B8 01AE 0...      276                      DC.W 8,440,430,445,410
-000011B4= 0008 01B8 019A 0...      277                      DC.W 8,440,410,445,390
-000011BE= 0002                     278                      DC.W 2
-000011C0= 00AAFFFF                 279                      DC.L LLITFILL2
-000011C4= 0008 015E 019A 0...      280                      DC.W 8,350,410,415,390
-000011CE= 0002                     281                      DC.W 2
-000011D0= 000022FF                 282                      DC.L LLITFILL3
-000011D4= 0008 019F 019A 0...      283                      DC.W 8,415,410,445,390
-000011DE= 0000                     284                      DC.W 0
-000011E0                           285                      
-000011E0                           286                      
-000011E0= 0001                     287  FLOORDATA           DC.W 1
-000011E2= 00000000                 288                      DC.L BLOCK1PEN
-000011E6= 0002                     289                      DC.W 2
-000011E8= 009EA7B5                 290                      DC.L BLOCK1FILL
-000011EC= 0008 0000 01DE 0...      291                      DC.W 8,0,478,50,430
-000011F6= 0005 0000 01C2 0...      292                      DC.W 5,0,450,50,450
-00001200= 0005 0000 01D6 0...      293                      DC.W 5,0,470,50,470
-0000120A= 0005 0000 01A4 0...      294                      DC.W 5,0,420,50,450
-00001214= 0005 0019 01D6 0...      295                      DC.W 5,25,470,25,450
-0000121E= 0000                     296                      DC.W 0              
-00001220                           297  
-00001220                           298  -------------------- end include --------------------
-00001220                           299      
-00001220                           300  START:
-00001220                           301      
-00001220                           302     
-00001220                           303      
-00001220  4EB8 104A                304      JSR     INIT     ; 1. Primero inicializamos la pantalla
-00001224                           305      ;JSR     FILE
-00001224  4EB8 1072                306      JSR     DRAWFIRST   ; 2. Despues dibujamos el bloque
-00001228  4EB8 10A6                307      JSR     DRAWFLOOR   
-0000122C                           308  
-0000122C                           309      
-0000122C                           310      
-0000122C                           311     
-0000122C                           312      
-0000122C                           313  
-0000122C                           314                               
-0000122C  FFFF FFFF                315      SIMHALT  
-00001230                           316             
-00001230                           317      INCLUDE "Vars.X68"
-00001230                           318  
-00001230                           319  
-00001230                           320  ;-----------------FILE RELATED VARIABLES------------------- 
-00001230= 49 4D 47 5C 61 6C ...    321  FILEDIRECTION1  DC.B 'IMG\alejandroBase.bin',0
-00001246                           322                  DS.W 0
-00001246                           323  BUFFER          DS.B 1996
-00001A12                           324  
-00001A12                           325  ;-----------------DRAWING RELATED VARIABLES-------------------
-00001A12                           326  
-00001A12                           327  
-00001A12                           328  -------------------- end include --------------------
-00001A12                           329      
-00001A12                           330      END    START       
+0000103E                            74  
+0000103E                            75  FILECLOSING   
+0000103E                            76  
+0000103E  103C 0038                 77             MOVE.B   #56,D0
+00001042  4E4F                      78             TRAP     #15
+00001044  4E75                      79             RTS
+00001046                            80             
+00001046                            81           
+00001046                            82  
+00001046                            83  
+00001046                            84  
+00001046                            85  
+00001046                            86  
+00001046                            87  
+00001046                            88  -------------------- end include --------------------
+00001046                            89      INCLUDE "init.X68"
+00001046                            90  
+00001046                            91  INIT
+00001046  4EB9 00001054             92          JSR SCRINIT
+0000104C  4EB9 00001066             93          JSR FILEINIT
+00001052  4E75                      94          RTS
+00001054                            95     
+00001054                            96  ; -----------------------------------------------------------------------------
+00001054                            97  SCRINIT
+00001054                            98  ; INITIALIZES THE SCREEN, SCREEN-RELATED INTERRUPT AND VARS.
+00001054                            99  ; INPUT    - NONE
+00001054                           100  ; OUTPUT   - NONE
+00001054                           101  ; MODIFIES - D0,D1,D2,D3
+00001054                           102  ; -----------------------------------------------------------------------------
+00001054                           103  
+00001054  103C 0021                104                MOVE.B  #33,D0
+00001058  223C 028001E0            105              MOVE.L  #SCRWIDTH<<16|SCRHEIGH,D1 ; WIDTH (HIGH) | HEIGHT (LOW)
+0000105E  4E4F                     106              TRAP    #15
+00001060                           107              
+00001060  7201                     108              MOVE.L  #1,D1                   ; SET WINDOWED MODE
+00001062  4E4F                     109              TRAP    #15
+00001064  4E75                     110              RTS
+00001066                           111                    
+00001066                           112  
+00001066                           113  FILEINIT
+00001066                           114  
+00001066  103C 0032                115          MOVE.B #50,D0
+0000106A  4E4F                     116          TRAP    #15
+0000106C  4E75                     117          RTS
+0000106E                           118  
+0000106E                           119  
+0000106E                           120  
+0000106E                           121  
+0000106E                           122  
+0000106E                           123  
+0000106E                           124  
+0000106E                           125  -------------------- end include --------------------
+0000106E                           126      INCLUDE "draw.X68"
+0000106E                           127  ; -----------------------------------------------------------------------------
+0000106E                           128  ;DRAWFIRST
+0000106E                           129  ; DRAWS ALL FIRST STAGE
+0000106E                           130  ; INPUT    - A0 POINTER TO THE PICTURE
+0000106E                           131  ;            D5.W X OFFSET
+0000106E                           132  ;            D6.W Y OFFSET
+0000106E                           133  ;            
+0000106E                           134                  
+0000106E                           135  ; OUTPUT   - NONE
+0000106E                           136  ; MODIFIES - NONE
+0000106E                           137  ; 
+0000106E                           138  ; -----------------------------------------------------------------------------
+0000106E                           139  
+0000106E                           140  
+0000106E                           141  DRAWFIRST
+0000106E                           142              
+0000106E  48E7 0020                143              MOVEM.L A2,-(A7)
+00001072  45F9 000011A8            144              LEA DRAWLST,A2
+00001078  3E3C 0000                145              MOVE.W #0,D7
+0000107C                           146  .LOOP_DRW           
+0000107C  CEFC 0004                147              MULU.W #4,D7
+00001080  2072 7000                148              MOVE.L  (A2,D7.W),A0 ;POINTER TO ACTUAL ADRESS
+00001084  8EFC 0004                149              DIVU.W #4,D7
+00001088  48E7 0080                150              MOVEM.L A0,-(A7)
+0000108C  4EB9 000010C8            151              JSR DRAWSR
+00001092  4CDF 0100                152              MOVEM.L (A7)+,A0
+00001096                           153              
+00001096  5247                     154              ADDQ.W  #1,D7
+00001098  BE7C 0002                155              CMP.W   #LENGTH1,D7          
+0000109C  6DDE                     156              BLT    .LOOP_DRW     ;LOWER THAN LENGTH1 KEEP ITERATING
+0000109E                           157                          
+0000109E  245F                     158              MOVE.L (A7)+,A2         
+000010A0  4E75                     159              RTS
+000010A2                           160  
+000010A2                           161  
+000010A2                           162  DRAWFLOOR
+000010A2                           163              
+000010A2  41F9 00001236            164              LEA FLOORDATA,A0
+000010A8  3E3C 0000                165              MOVE.W #0,D7
+000010AC                           166  .LOOP_DRW2  
+000010AC                           167                      
+000010AC  48E7 0080                168              MOVEM.L A0,-(A7)
+000010B0  4EB9 000010C8            169              JSR DRAWSR
+000010B6  4CDF 0100                170              MOVEM.L (A7)+,A0
+000010BA                           171              
+000010BA  5247                     172              ADDQ.W  #1,D7
+000010BC  0645 0032                173              ADD.W   #50,D5
+000010C0  BE7C 000D                174              CMP.W   #LENGTH2,D7          
+000010C4  6DE6                     175              BLT    .LOOP_DRW2     ;LOWER THAN LENGTH1 KEEP ITERATING
+000010C6                           176                                      
+000010C6  4E75                     177              RTS
+000010C8                           178  
+000010C8                           179  
+000010C8                           180  
+000010C8                           181  
+000010C8                           182  ; -----------------------------------------------------------------------------
+000010C8                           183  ;DRAWSR
+000010C8                           184  ; DRAWS A PICTURE
+000010C8                           185  ; INPUT    - A0 POINTER TO THE PICTURE
+000010C8                           186  ;            D5.W X OFFSET
+000010C8                           187  ;            D6.W Y OFFSET
+000010C8                           188  ; OUTPUT   - NONE
+000010C8                           189  ; MODIFIES - NONE
+000010C8                           190  ; 
+000010C8                           191  
+000010C8                           192  
+000010C8                           193  DRAWSR
+000010C8                           194          
+000010C8  48E7 F8C0                195              MOVEM.L D0-D4/A0-A1,-(A7)
+000010CC  3018                     196  .LOOP       MOVE.W  (A0)+,D0   ;COMMAND ID
+000010CE  6700 0088                197              BEQ     .END
+000010D2  43F9 000010EA            198              LEA     .TBL,A1
+000010D8  C0FC 0004                199              MULU.W  #4,D0   ;TIMES 4 TO ACCES CORRECT LONG                      
+000010DC  2271 0000                200              MOVE.L  (A1,D0.W),A1    ;GET THE CORRECT JUMP ADDRESS        
+000010E0  80FC 0004                201              DIVU.W  #4,D0                   ; RESTORE D0
+000010E4  0640 004F                202              ADD.W   #79,D0                  ; CREATE THE TRAP CODE
+000010E8  4ED1                     203              JMP     (A1)                    ; JUMP TO ADDRESS
+000010EA                           204              
+000010EA                           205  
+000010EA= 000010CC                 206  .TBL        DC.L    .LOOP                   ; 00 UNUSED
+000010EE= 0000111E                 207              DC.L    .D1L                    ; 01 SET PEN
+000010F2= 0000111E                 208              DC.L    .D1L                    ; 02 SET FILL
+000010F6= 00001126                 209              DC.L    .PAF                  ; 03 DRAW PIXEL
+000010FA= 00001126                 210              DC.L    .PAF                   ; 04 SET PEN AND FILL
+000010FE= 00001146                 211              DC.L    .D1D4W                  ; 05 DRAW LINE FULL SPECS
+00001102= 00001136                 212              DC.L    .D1D2W                  ; 06 DRAW LINE POLYLINE VERSION
+00001106= 00001136                 213              DC.L    .D1D2W                  ; 07 MOVE TO
+0000110A= 00001146                 214              DC.L    .D1D4W                  ; 08 DRAW FILLED RECTANGLE
+0000110E= 00001146                 215              DC.L    .D1D4W                  ; 09 DRAW FILLED ELLIPSE
+00001112= 00001136                 216              DC.L    .D1D2W                  ; 10 FLOOD FILL
+00001116= 00001146                 217              DC.L    .D1D4W                  ; 11 DRAW UNFILLED RECTANGLE
+0000111A= 00001146                 218              DC.L    .D1D4W                  ; 12 DRAW UNFILLED ELLIPSE          
+0000111E                           219              
+0000111E  2218                     220  .D1L        MOVE.L  (A0)+,D1                ; GET LONG
+00001120  4E4F                     221              TRAP    #15
+00001122  4EF8 10CC                222              JMP     .LOOP
+00001126                           223              
+00001126  2218                     224  .PAF        MOVE.L  (A0)+,D1                ; GET LONG AND DO SET PEN AND FILL
+00001128  103C 0050                225              MOVE.B  #80,D0
+0000112C  4E4F                     226              TRAP    #15
+0000112E  5200                     227              ADDQ.B  #1,D0
+00001130  4E4F                     228              TRAP    #15
+00001132  4EF8 10CC                229              JMP     .LOOP
+00001136                           230              
+00001136  2218                     231  .D1D2W      MOVE.L  (A0)+,D1                ; GET LONG AND DO SET PEN AND FILL
+00001138  103C 0050                232              MOVE.B  #80,D0
+0000113C  4E4F                     233              TRAP    #15
+0000113E  5200                     234              ADDQ.B  #1,D0
+00001140  4E4F                     235              TRAP    #15
+00001142  4EF8 10CC                236              JMP     .LOOP
+00001146                           237  
+00001146                           238              
+00001146  4C98 001E                239  .D1D4W      MOVEM.W (A0)+,D1-D4             ; GET 4 WORDS
+0000114A  D245                     240              ADD.W   D5,D1
+0000114C  D446                     241              ADD.W   D6,D2
+0000114E  D645                     242              ADD.W   D5,D3
+00001150  D846                     243              ADD.W   D6,D4
+00001152  4E4F                     244              TRAP    #15
+00001154  4EF8 10CC                245              JMP     .LOOP                   
+00001158                           246              
+00001158  4CDF 031F                247  .END        MOVEM.L (A7)+,D0-D4/A0-A1
+0000115C  4E75                     248              RTS
+0000115E                           249  
+0000115E                           250  
+0000115E                           251  
+0000115E                           252  
+0000115E                           253  
+0000115E                           254  
+0000115E                           255  -------------------- end include --------------------
+0000115E                           256      INCLUDE "Sprite.X68"
+0000115E                           257  SPRITEDRAWING
+0000115E                           258              
+0000115E  41F9 0000129C            259              LEA BUFFER,A0
+00001164                           260              
+00001164  3C18                     261              MOVE.W  (A0)+,D6    ;IMAGE WIDTH
+00001166  3E18                     262              MOVE.W  (A0)+,D7    ;IMAGE HEIGHT
+00001168                           263          
+00001168                           264              
+00001168  7800                     265              MOVE.L  #0,D4       ;D4 USED TO CONTROL CURRENT WIDTH
+0000116A  7600                     266              MOVE.L  #0,D3       ;D3 USED TO CONTROL CURRENT HEIGHT
+0000116C                           267              
+0000116C  B647                     268  HEIGHT      CMP.W D7,D3
+0000116E  6400 0036                269              BHS FINAL                       
+00001172  7800                     270              MOVE.L  #0,D4       ;D4 USED TO CONTROL CURRENT WIDTH
+00001174                           271  
+00001174                           272  NEXT            
+00001174  2018                     273              MOVE.L  (A0)+,D0    ;COLORS AND NUMBER OF REPETITIONS
+00001176  2200                     274              MOVE.L  D0,D1       ;D1 GETS COLOR
+00001178  E089                     275              LSR.L   #8,D1       ;BITS MOVED TO GET CORRECT FORMAT           
+0000117A  2A00                     276              MOVE.L  D0,D5       ;D5 GETS REPETITIONS
+0000117C  CABC 000000FF            277              AND.L #$FF,D5       ;MASK TO GET CORRECT FORMAT
+00001182                           278  
+00001182                           279              
+00001182  4240                     280              CLR D0
+00001184  103C 0050                281              MOVE.B #80,D0
+00001188  4E4F                     282              TRAP #15
+0000118A                           283              
+0000118A                           284  PAINT
+0000118A                           285  
+0000118A  2204                     286              MOVE.L D4,D1
+0000118C  2403                     287              MOVE.L D3,D2 
+0000118E  103C 0052                288              MOVE.B #82,D0
+00001192  4E4F                     289              TRAP #15
+00001194  5284                     290              ADDQ.L #1,D4
+00001196  51CD FFF2                291              DBRA D5,PAINT
+0000119A  BC44                     292              CMP.W D4,D6
+0000119C  6700 0004                293              BEQ HEIGHT_CHECK
+000011A0  66D2                     294              BNE NEXT
+000011A2                           295  HEIGHT_CHECK
+000011A2  5243                     296              ADDQ.W #1,D3
+000011A4  60C6                     297              BRA HEIGHT
+000011A6                           298              
+000011A6  4E75                     299  FINAL           RTS
+000011A8                           300  
+000011A8                           301  
+000011A8                           302  
+000011A8                           303  
+000011A8                           304  
+000011A8                           305  
+000011A8                           306  
+000011A8                           307  -------------------- end include --------------------
+000011A8                           308      INCLUDE "DATA/Data.X68"
+000011A8                           309  
+000011A8                           310  ;-----------------Drawing Related Data-------------------
+000011A8                           311  
+000011A8                           312  
+000011A8= 000011B0                 313  DRAWLST         DC.L    .WHITETEST                  ; 0
+000011AC= 000011B0                 314                  DC.L    .WHITETEST                 ; 1
+000011B0                           315  
+000011B0                           316                  
+000011B0                           317  
+000011B0                           318  
+000011B0= 0002                     319  .WHITETEST          DC.W 2
+000011B2= 009EA7B5                 320                      DC.L BLOCK1FILL             
+000011B6= 0008 0000 0000 0...      321                      DC.W 8,0,0,640,480
+000011C0                           322  
+000011C0                           323  
+000011C0                           324  
+000011C0                           325  
+000011C0                           326  .BLOCK2            
+000011C0= 0002                     327                      DC.W 2
+000011C2= 00FFFFFF                 328                      DC.L BLOCK2FILL
+000011C6= 0008 0064 00FA 0...      329                      DC.W 8,100,250,190,180
+000011D0= 0008 00B9 010E 0...      330                      DC.W 8,185,270,330,200
+000011DA= 0008 0118 00DC 0...      331                      DC.W 8,280,220,310,180
+000011E4= 0000                     332                      DC.W 0 
+000011E6                           333  
+000011E6= 0002                     334  .LLIT               DC.W 2
+000011E8= 00052B56                 335                      DC.L LLITFILL1
+000011EC= 0008 015E 01AE 0...      336                      DC.W 8,350,430,355,410
+000011F6= 0008 015E 01A4 0...      337                      DC.W 8,350,420,440,410
+00001200= 0008 01B8 01AE 0...      338                      DC.W 8,440,430,445,410
+0000120A= 0008 01B8 019A 0...      339                      DC.W 8,440,410,445,390
+00001214= 0002                     340                      DC.W 2
+00001216= 00AAFFFF                 341                      DC.L LLITFILL2
+0000121A= 0008 015E 019A 0...      342                      DC.W 8,350,410,415,390
+00001224= 0002                     343                      DC.W 2
+00001226= 000022FF                 344                      DC.L LLITFILL3
+0000122A= 0008 019F 019A 0...      345                      DC.W 8,415,410,445,390
+00001234= 0000                     346                      DC.W 0
+00001236                           347                      
+00001236                           348                      
+00001236= 0001                     349  FLOORDATA           DC.W 1
+00001238= 00000000                 350                      DC.L BLOCK1PEN
+0000123C= 0002                     351                      DC.W 2
+0000123E= 009EA7B5                 352                      DC.L BLOCK1FILL
+00001242= 0008 0000 01DE 0...      353                      DC.W 8,0,478,50,430
+0000124C= 0005 0000 01C2 0...      354                      DC.W 5,0,450,50,450
+00001256= 0005 0000 01D6 0...      355                      DC.W 5,0,470,50,470
+00001260= 0005 0000 01A4 0...      356                      DC.W 5,0,420,50,450
+0000126A= 0005 0019 01D6 0...      357                      DC.W 5,25,470,25,450
+00001274= 0000                     358                      DC.W 0              
+00001276                           359  
+00001276                           360  
+00001276                           361  -------------------- end include --------------------
+00001276                           362      
+00001276                           363  START:
+00001276                           364      
+00001276                           365     
+00001276                           366      
+00001276  4EB8 1046                367      JSR     INIT     ; 1. Primero inicializamos la pantalla
+0000127A  4EB8 1000                368      JSR     FILE
+0000127E                           369      ;JSR     DRAWFIRST   ; 2. Despues dibujamos el bloque
+0000127E  4EB8 115E                370      JSR     SPRITEDRAWING
+00001282                           371  
+00001282                           372      ;JSR     DRAWFLOOR   
+00001282                           373  
+00001282                           374      
+00001282                           375      
+00001282                           376     
+00001282                           377      
+00001282                           378  
+00001282                           379                               
+00001282  FFFF FFFF                380      SIMHALT  
+00001286                           381             
+00001286                           382      INCLUDE "Vars.X68"
+00001286                           383  
+00001286                           384  
+00001286                           385  ;-----------------FILE RELATED VARIABLES------------------- 
+00001286= 49 4D 47 5C 61 6C ...    386  FILEDIRECTION1  DC.B 'IMG\alejandroBase.bin',0
+0000129C                           387                  DS.W 0
+0000129C                           388  BUFFER          DS.B 1996
+00001A68                           389  
+00001A68                           390  ;-----------------DRAWING RELATED VARIABLES-------------------
+00001A68                           391  
+00001A68                           392  
+00001A68                           393  -------------------- end include --------------------
+00001A68                           394      
+00001A68                           395      END    START       
 
 No errors detected
 No warnings generated
@@ -344,30 +409,34 @@ BLOCK1FILL          9EA7B5
 BLOCK1PEN           0
 BLOCK2FILL          FFFFFF
 BLOCK2PEN           FFFFFF
-BUFFER              1246
-DRAWFIRST           1072
-DRAWFIRST:LOOP_DRW  1080
-DRAWFLOOR           10A6
-DRAWFLOOR:LOOP_DRW2  10B0
-DRAWLST             1162
-DRAWLST:BLOCK2      116A
-DRAWLST:LLIT        1190
-DRAWSR              10CC
-DRAWSR:D1D2W        113A
-DRAWSR:D1D4W        114A
-DRAWSR:D1L          1122
-DRAWSR:END          115C
-DRAWSR:LOOP         10D0
-DRAWSR:PAF          112A
-DRAWSR:TBL          10EE
+BUFFER              129C
+DRAWFIRST           106E
+DRAWFIRST:LOOP_DRW  107C
+DRAWFLOOR           10A2
+DRAWFLOOR:LOOP_DRW2  10AC
+DRAWLST             11A8
+DRAWLST:BLOCK2      11C0
+DRAWLST:LLIT        11E6
+DRAWLST:WHITETEST   11B0
+DRAWSR              10C8
+DRAWSR:D1D2W        1136
+DRAWSR:D1D4W        1146
+DRAWSR:D1L          111E
+DRAWSR:END          1158
+DRAWSR:LOOP         10CC
+DRAWSR:PAF          1126
+DRAWSR:TBL          10EA
 FILE                1000
 FILECLOSING         103E
-FILEDIRECTION1      1230
-FILEINIT            106A
+FILEDIRECTION1      1286
+FILEINIT            1066
 FILEOPENING         101C
 FILEREADING1        102A
-FLOORDATA           11E0
-INIT                104A
+FINAL               11A6
+FLOORDATA           1236
+HEIGHT              116C
+HEIGHT_CHECK        11A2
+INIT                1046
 LENGTH1             2
 LENGTH2             D
 LLITFILL1           52B56
@@ -375,7 +444,10 @@ LLITFILL2           AAFFFF
 LLITFILL3           22FF
 LLITPEN1            52B56
 LLITPEN2            FFFFFF
+NEXT                1174
+PAINT               118A
 SCRHEIGH            1E0
-SCRINIT             1058
+SCRINIT             1054
 SCRWIDTH            280
-START               1220
+SPRITEDRAWING       115E
+START               1276
