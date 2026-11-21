@@ -23,8 +23,8 @@ FILEOPENING
 
 FILEREADING1
 
-            LEA     BUFFER,A1
-            MOVE.L  #1996,D2
+            LEA     BUFFER1,A1
+            MOVE.L  #37332,D2
             MOVE.B  #53,D0
             TRAP    #15        
             RTS
@@ -37,6 +37,7 @@ FILECLOSING
            RTS
            
          
+
 
 
 

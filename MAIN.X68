@@ -8,7 +8,7 @@
     
     
     INCLUDE "Constants.X68"
-     INCLUDE "File.X68"
+    INCLUDE "File.X68"
     INCLUDE "init.X68"
     INCLUDE "draw.X68"
     INCLUDE "Sprite.X68"
@@ -21,9 +21,10 @@ START:
     JSR     INIT     ; 1. Primero inicializamos la pantalla
     JSR     FILE
     JSR     DRAWFIRST   ; 2. Despues dibujamos el bloque
-    JSR		SPRITEDRAWING
+    JSR     DRAWFLOOR   ; 2. Despues dibujamos el bloque
+    JSR		SPRITEDRAWINGDEF
 
-    ;JSR     DRAWFLOOR   
+*    ;JSR     DRAWFLOOR   
 
     
     
@@ -36,6 +37,9 @@ START:
     INCLUDE "Vars.X68"
     
     END    START       
+
+
+
 
 
 

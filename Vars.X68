@@ -7,11 +7,12 @@
 
 
 ;-----------------FILE RELATED VARIABLES------------------- 
-FILEDIRECTION1  DC.B 'IMG\alejandroBase.bin',0
+FILEDIRECTION1  DC.B 'IMG\noabrir.bin',0
                 DS.W 0
-BUFFER          DS.B 1996
+BUFFER1          DS.B 37332
 
 ;-----------------DRAWING RELATED VARIABLES-------------------
+
 
 
 *~Font name~Courier New~
