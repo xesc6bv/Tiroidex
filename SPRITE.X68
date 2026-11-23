@@ -1,10 +1,15 @@
-*-----------------------------------------------------------
-* Title      :SPRITE
-* Written by :
-* Date       :
-* Description:
-*-----------------------------------------------------------
+; ==========================================================
+; SPRITES MANAGEMENT
+; ==========================================================
+
+; ----------------------------------------------------------
 SPRITEDRAWING
+
+; (Description)
+; INPUT    - 
+; OUTPUT   - 
+; MODIFIES - 
+; ----------------------------------------------------------
 			
 			LEA BUFFER1,A0
 			
@@ -32,7 +37,6 @@ NEXT
 			TRAP #15
 			
 PAINT
-
 			MOVE.L D4,D1
 			MOVE.L D3,D2 
 			MOVE.B #82,D0
@@ -42,6 +46,7 @@ PAINT
 			CMP.W D4,D6
 			BEQ HEIGHT_CHECK
 			BNE NEXT
+			
 HEIGHT_CHECK
 			ADDQ.W #1,D3
 			BRA	HEIGHT
@@ -49,7 +54,14 @@ HEIGHT_CHECK
 FINAL  			RTS
 
 
+; ----------------------------------------------------------
 SPRITEDRAWINGDEF
+
+; (Description)
+; INPUT    - 
+; OUTPUT   - 
+; MODIFIES - 
+; ----------------------------------------------------------
 
 			LEA BUFFER1,A0
 			MOVE.W	(A0)+,D6	;IMAGE WIDTH
@@ -98,17 +110,20 @@ NEXT2
 			MOVE.B	#87,D0
 			TRAP #15
 			MOVEM.L (A7)+,D3/D4/D5
+			
 NOPAINT			
 			ADD.L	D5,D4
 			ADDQ.L	#1,D4
 			CMP.W D4,D6
 			BEQ HEIGHT_CHECK2
 			BNE NEXT2
+			
 HEIGHT_CHECK2
 			ADDQ.W #1,D3
 			BRA	HEIGHT2
 			
 FINAL2  			RTS
+
 
 
 

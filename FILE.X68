@@ -1,9 +1,6 @@
-*-----------------------------------------------------------
-* Title      : FILE
-* Written by : Francesc Bruquetas Vera
-* Date       : 03-11-2026
-* Description: All constants used in the program are here
-*-----------------------------------------------------------
+; =========================================================
+; FILE MANAGEMENT
+; =========================================================
 
 FILE
             MOVEM.L D0-D2/A1,-(A7)
@@ -15,7 +12,6 @@ FILE
 
 FILEOPENING
              
-
              LEA    FILEDIRECTION1,A1
              MOVE.B #51,D0
              TRAP   #15
@@ -37,6 +33,7 @@ FILECLOSING
            RTS
            
          
+
 
 
 

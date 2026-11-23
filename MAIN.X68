@@ -1,42 +1,75 @@
-*-----------------------------------------------------------
-* Title      :
-* Written by :
-* Date       :
-* Description:
-*-----------------------------------------------------------
+; ===========================================================
+; TITLE    : TIROIDEX
+; AUTHOR 1 : FRANCESC BRUQUETAS VERA
+; AUTHOR 2 : ALEJANDRO CASTILLA CUÉLLAR
+; ===========================================================
+
     ORG    $1000
     
-    
-    INCLUDE "Constants.X68"
-    INCLUDE "File.X68"
-    INCLUDE "init.X68"
-    INCLUDE "draw.X68"
-    INCLUDE "Sprite.X68"
-    INCLUDE "DATA/Data.X68"
-    
-START:
-    
-   
-    
-    JSR     INIT     ; 1. Primero inicializamos la pantalla
-    JSR     FILE
-    JSR     DRAWFIRST   ; 2. Despues dibujamos el bloque
-    JSR     DRAWFLOOR   ; 2. Despues dibujamos el bloque
-    JSR		SPRITEDRAWINGDEF
+; - CODE INCLUDES -------------------------------------------    
 
-*    ;JSR     DRAWFLOOR   
+    INCLUDE "SYSCONSTS.X68"				; SYSTEM CONSTANTS
+    INCLUDE "CONSTANTS.X68"             ; GENERAL CONSTANTS
+    INCLUDE "FILE.X68"                  ; FILE MANAGEMENT
+    INCLUDE "INIT.X68"                  ; INITIALIZATION MANAGEMENT
+    INCLUDE "DRAW.X68"					; DRAWING MANAGEMENT
+    INCLUDE "SPRITE.X68"				; SPRITES MANAGEMENT
+    INCLUDE "TITLESCREEN.X68"           ; TITLESCR MANAGEMENT
+    INCLUDE "MAP.X68"					; MAP MANAGEMENT
+    INCLUDE "PLAYER.X68"                ; PLAYER MANAGEMENT
+    INCLUDE "SLEEPBAR.X68"				; SLEEPBAR MANAGEMENT
+    	
+; - DATA INCLUDES ------------------------------------------   
 
+    INCLUDE "DATA/DRAWINGDATA.X68"
+    INCLUDE "DATA/TEXTDATA.X68"
     
-    
-   
-    
+START
 
-                             
-    SIMHALT  
-           
-    INCLUDE "Vars.X68"
+; - INITIALIZATION -----------------------------------------
+
+	JSR     INIT
+	JSR		TITLESCRINIT
+	JSR		MAPINIT
+	JSR		PLAYERINIT
+	JSR		SLPBARINIT
+	
+	; JSR		FILE
+	; JSR		SPRITEDRAWINGDEF
+	
+	
+.LOOP
+	
+; - UPDATE -------------------------------------------------	
+    
+    ; READ INPUT DEVICES - NO DRAWING
+    ; UPDATE GAME LOGIC - NO DRAWING
+    
+; - SYNC ---------------------------------------------------
+    
+    ; AVOID INCOMPATIBILITIES BETWEEN DRAWING SPEED AND INPUT READING SPEED
+    
+; - PLOT ---------------------------------------------------
+
+	; DRAWING ALL THE GAME - NO UPDATE  
+
+	BRA .LOOP   
+    
+    SIMHALT
+    
+; - VARIABLES INCLUDES -------------------------------------
+    
+    INCLUDE "VARS.X68"                   ; GENERAL VARIABLES
+    INCLUDE "SYSVARS.X68"                 ; SYSTEM VARIABLES
     
     END    START       
+
+
+
+
+
+
+
 
 
 
