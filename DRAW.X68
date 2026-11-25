@@ -14,7 +14,7 @@ DRAWFIRST
 ; ----------------------------------------------------------
 
 			MOVEM.L A2,-(A7)
-			LEA	DRAWLST,A2
+			LEA	DRAWLST1,A2
 			MOVE.W #0,D7
 			
 .LOOP_DRW			
@@ -32,8 +32,15 @@ DRAWFIRST
 			MOVE.L (A7)+,A2			
 			RTS
 
-
+; ----------------------------------------------------------
 DRAWFLOOR
+
+; DRAWS THE FLOOR
+; INPUT    - 
+; OUTPUT   - NONE
+; MODIFIES - NONE
+; ----------------------------------------------------------
+
 			
 			LEA	FLOORDATA,A0
 			MOVE.W #0,D7
@@ -56,8 +63,8 @@ DRAWFLOOR
 ; ----------------------------------------------------------
 DRAWSR
 
-; DRAWS A PICTURE
-; INPUT    - A0 POINTER TO THE PICTURE
+; DRAWS A OBJECT
+; INPUT    - A0 POINTER TO THE OBJECT
 ;            D5.W X OFFSET
 ;            D6.W Y OFFSET
 ; OUTPUT   - NONE
@@ -65,6 +72,7 @@ DRAWSR
 ; ----------------------------------------------------------
 		
 			MOVEM.L D0-D4/A0-A1,-(A7)
+			
 .LOOP		MOVE.W  (A0)+,D0   		; COMMAND ID
 			BEQ 	.END
 			LEA     .TBL,A1
@@ -117,7 +125,11 @@ DRAWSR
             JMP     .LOOP					
 			
 .END        MOVEM.L (A7)+,D0-D4/A0-A1
+
             RTS
+
+
+
 
 
 
